@@ -1,4 +1,3 @@
-
 version: 0.2
 
 env:
@@ -7,36 +6,28 @@ env:
     SAM_STACK_NAME: expense-tracker-poc-stack
 
 phases:
-
   install:
     commands:
       - echo "===== INSTALL STAGE ====="
-      - echo "Checking Node.js version..."
       - node --version
       - npm --version
-      - echo "Checking AWS CLI..."
       - aws --version
-      - echo "Checking SAM CLI..."
       - sam --version
 
   pre_build:
     commands:
       - echo "===== PRE-BUILD STAGE ====="
-      - echo "Installing Lambda dependencies..."
-      - npm ci
+      - npm ci --prefix src
 
   build:
     commands:
       - echo "===== BUILD STAGE ====="
-      - echo "Validating SAM template..."
       - sam validate --lint --template-file template.yaml
-      - echo "Building SAM application..."
       - sam build --template-file template.yaml
 
   post_build:
     commands:
       - echo "===== POST-BUILD STAGE ====="
-      - echo "Deploying Lambda using AWS SAM..."
       - >
         sam deploy
         --template-file .aws-sam/build/template.yaml
@@ -48,9 +39,3 @@ phases:
         --no-fail-on-empty-changeset
 
       - echo "===== DEPLOYMENT COMPLETED ====="
-
-artifacts:
-  files:
-    - template.yaml
-    - .aws-sam/build/**/*
-  discard-paths: no
