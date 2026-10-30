@@ -17,8 +17,8 @@ phases:
   pre_build:
     commands:
       - echo "===== PRE-BUILD STAGE ====="
-      - npm ci --prefix src
-
+      - npm ci --prefix src/lambda-2
+      - npm ci --prefix src/lambda-3
   build:
     commands:
       - echo "===== BUILD STAGE ====="
@@ -35,8 +35,8 @@ phases:
         --region "$AWS_REGION"
         --capabilities CAPABILITY_IAM
         --resolve-s3
-        --no-confirm-changeset 
-        --no-fail-on-empty-changeset
-        # --no-execute-changeset
+        # --no-confirm-changeset 
+        # --no-fail-on-empty-changeset
+        --no-execute-changeset
 
       - echo "===== DEPLOYMENT COMPLETED ====="

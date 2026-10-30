@@ -2,7 +2,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
-Description: Expense Tracker POC - Existing Lambda managed using SAM
+Description: Expense Tracker POC - Two existing Lambdas managed using SAM
 
 Resources:
 
@@ -16,7 +16,7 @@ Resources:
 
       Runtime: nodejs22.x
       Handler: index.handler
-      CodeUri: src/
+      CodeUri: src/lambda-2/
 
       PackageType: Zip
       MemorySize: 128
@@ -37,6 +37,49 @@ Resources:
       LoggingConfig:
         LogFormat: Text
         LogGroup: /aws/lambda/expense-tracker-poc-lambda-2
+
+      Tracing: PassThrough
+
+      EphemeralStorage:
+        Size: 512
+
+      RuntimeManagementConfig:
+        UpdateRuntimeOn: Auto
+
+      RecursiveLoop: Terminate
+
+
+  ExpenseTrackerLambda3:
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+
+    Properties:
+      FunctionName: expense-tracker-poc-lambda-3
+
+      Runtime: nodejs22.x
+      Handler: index.handler
+      CodeUri: src/lambda-3/
+
+      PackageType: Zip
+      MemorySize: 128
+      Timeout: 3
+      Architectures:
+        - x86_64
+
+      Role: arn:aws:iam::964222105287:role/lambda-execution-role
+
+      VpcConfig:
+        SubnetIds:
+          - subnet-0c8d0a85cfc5ea54e
+          - subnet-07b86a9004f5845f8
+        SecurityGroupIds:
+          - sg-09d14e1b090db41fc
+        Ipv6AllowedForDualStack: false
+
+      LoggingConfig:
+        LogFormat: Text
+        LogGroup: /aws/lambda/expense-tracker-poc-lambda-3
 
       Tracing: PassThrough
 
