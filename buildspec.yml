@@ -35,6 +35,8 @@ phases:
         --region "$AWS_REGION"
         --capabilities CAPABILITY_IAM
         --resolve-s3
-        --no-execute-changeset
+        --no-confirm-changeset 
+        --no-fail-on-empty-changeset
+        # --no-execute-changeset
 
       - echo "===== DEPLOYMENT COMPLETED ====="
